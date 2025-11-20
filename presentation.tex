@@ -1,0 +1,269 @@
+\documentclass[11pt]{beamer}
+\usetheme{Bergen}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fontawesome}
+\usepackage{xcolor}
+\usepackage{movie15}
+\usepackage{dsfont}
+\usepackage{tikz}
+\def\insertauthorindicator{Ponente}
+\def\insertinstituteindicator{Instituto}
+\def\insertdateindicator{Fecha}
+\usetikzlibrary{decorations.markings}
+
+\tikzset{
+  invisible/.style={opacity=0},
+  visible on/.style={alt={#1{}{invisible}}},
+  alt/.code args={<#1>#2#3}{%
+    \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+  },
+}
+\setbeamertemplate{footline}[frame number]
+\author{José Antonio García Hernández}
+\title{\huge Introduction to Lattice QCD}
+\setbeamercovered{transparent} 
+\setbeamertemplate{navigation symbols}{} 
+
+\institute{Instituto de Ciencias Nucleares, UNAM} 
+\date{5 diciembre 2025 \\ XXI Congreso de Estudiantes del PCF} 
+\subject{Lattice Field Theories} 
+\begin{document}
+
+\begin{frame}
+\titlepage
+\includegraphics[width=3cm]{icn.png}
+\end{frame}
+
+%\begin{frame}
+%\tableofcontents
+%\end{frame}
+
+\section{Introduction}
+\subsection{Functional Integral}
+\begin{frame}{Functional integral formalism}
+
+    Sum over ALL field configurations $[\phi(x)]$
+    $$Z = \int \mathcal{D}\phi \, e^{iS[\phi]},$$
+    where $S[\phi]$ is the action% de la configuración
+    $$ S[\phi] = \int d^4 x \, \left( \frac{1}{2}\partial_{\mu}\phi \partial^{\mu}\phi - V(\phi)\right).$$
+    $n$-point function
+    $$ \langle O[\phi(x_1)] \cdots \rangle =  \frac{1}{Z}\int \mathcal{D}\phi \, O[\phi(x_1)]\cdots e^{iS[\phi]}.$$
+\end{frame}
+
+\begin{frame}{Euclidean space}
+    Wick's rotation \\~
+    $$ t \to \tau = i t.$$
+    %Espaciotiempo de Minkowski $\to$ Espaciotiempo euclidiano \\~
+    $$ \eta_{\mu\nu} \to \delta_{\mu\nu}$$
+        
+    Weight factor 
+        $$ \int \mathcal{D}\phi \, e^{iS[\phi]} \to  \int \mathcal{D}\phi \, e^{-S_{\text{E}}[\phi]},$$
+        where
+        $$ S_{\text{E}}[\phi] = \int d^4 x \, \left( \frac{1}{2}\partial_{\mu}\phi \partial_{\mu}\phi + V(\phi)\right).$$
+        Partition function $ Z = \int \mathcal{D}\phi\, e^{-\beta H[\phi]}$.
+        
+        Field theory $\to$ statistical physics. 
+\end{frame}
+
+\subsection{Lattice regularization}
+\begin{frame}{Lattice Regularization}
+    UV divergencies.\\~
+    
+    Discretization of the lattice: %Discretizar el espaciotiempo
+    
+    \begin{center}
+    \begin{tikzpicture}[scale = 0.5]
+    	\draw (-0.5,-0.5) grid (2.5,2.5);
+    	\fill[red] (1,1) circle(0.15);
+    	\draw[red] (1.5,1.5) node[]{$\phi_x$};
+    	\draw[blue] (2,0) node[above right]{ $a$};
+    	\draw[-latex, thick] (4,1) --(4,2) node[left]{\small $\hat{2}$};
+	\draw[-latex, thick] (4,1) --(5,1) node[right]{\small $\hat{1}$};
+    \end{tikzpicture}
+    \end{center}
+    \begin{itemize}
+    		\item $\phi(x) \to \phi_x$
+         \item $\displaystyle\partial_\mu\phi(x) \to \frac{\phi_{x + a\hat{\mu}} - \phi_x}{a}$
+         \item $\displaystyle\int d^4x \to a^4\sum_{x}$
+    \end{itemize}
+    
+    Lattice units $a = 1$. \\~
+    
+    NON-PERTURBATIVE formalism.
+\end{frame}
+
+\begin{frame}{Markov chains}
+
+        Markov chain: A chain of configurations where the current configuration only depends on the previous one.
+
+    %Generamos una cadena de configuraciones donde la configuración actual depende solo de la anterior (cadena de Markov)
+    
+    $$ [\phi_1] \to [\phi_2] \to \cdots$$
+
+    $$\langle O \rangle = \frac{1}{N}\sum_{i=1}^N O[\phi_i]$$
+    where $[\phi_i]$ is generated with probability $\frac{1}{Z}e^{-S_{\text{E}}[\phi_i]}$.
+\end{frame}
+
+\begin{frame}{Importance sampling}
+    In order to generate good configurations the algorithm needs to satisfy   
+    %Para generar configuraciones, el algoritmo necesita cumplir
+    \begin{itemize}
+        \item<1-> Ergodicity
+        \begin{center}
+        		\begin{tikzpicture}
+        			\draw (0,0) rectangle (4,2);
+        			\draw[blue] (0.1,0.5) -- (1,1.18) -- (3, 0.3) -- (3.7, 1.9) -- (1, 0.1) --(0.8,1.8) -- (2,1.5);
+        		\end{tikzpicture}
+        \end{center}
+        \item<2-> Detailed balance
+        \begin{center}
+        \begin{tikzpicture}
+    		\coordinate (A) at (0.7,0.7);
+    		\coordinate (B) at (3,1.5);
+    		\draw (0,0) rectangle (4,2);
+    		\fill[] (A) circle(0.1) node[left]{$A$};
+    		\fill[] (B) circle(0.1) node[right]{$B$};
+    		\draw[blue,thick, -latex] (A) to[out = 90, in = 180] (B);
+    	\draw[red,thick, -latex] (B) to[out = -90, in = 0] (A);		
+    		
+    \end{tikzpicture}
+    \end{center}
+    $$ p[A]p[A \to B] = p[B]p[B \to A]$$
+    \end{itemize}
+    
+    
+\end{frame}
+
+\begin{frame}{Update algorithms}
+    Local
+    \begin{itemize}
+        \item Metropolis
+        \item Glauber
+        \item Heatbath
+        %\item Hybrid Monte Carlo
+        \item etc\dots
+    \end{itemize}
+    
+    \ \\~
+    
+    Global
+    \begin{itemize}
+        \item Wolff
+        \item Swendsen-Wang
+        \item Molecular dynamics \\
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Monte Carlo simulation}
+
+    \begin{itemize}
+    		\item Initial configuration \emph{\textcolor{red}{hot}} or \emph{\textcolor{blue}{cold}} \emph{start}.
+        \item Generation of configurations.
+        \item Equilibrium.
+        \item Taking measurements.
+        \item Computation of averages and errors (\emph{jackknife} commonly used).
+        \item Interpretation of results.
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Lattice gauge field theory}
+Compact formulation: $$A_{\mu}(x) \in \mathfrak{su}(N) \to U_{\mu}(x) \in \text{SU}(N).$$
+$$\text{Link variable: }U_{\mu}(x) = e^{iA_{\mu}(x)}.$$ 
+
+	\begin{tikzpicture}[scale = 0.7]
+		%\tikzset{middlearrow/.style={decoration={markings,mark= at position 0.6 with {\arrow{#1}} ,},postaction={decorate}}};
+		\draw[step=2cm,color=gray] (-1,-1) grid (3,3);
+		\draw[very thick,red] (0,0) --(2,0);
+		\draw[very thick,red] (2,0)--(2,2);
+		\draw[very thick,red] (2,2)--(0,2);
+		\draw[very thick,red] (0,2)--(0,0);
+		\filldraw[black] (0,0) circle(0.1);
+		\filldraw[black] (2,0) circle(0.1);
+		\filldraw[black] (2,2) circle(0.1);
+		\filldraw[black] (0,2) circle(0.1);
+		\draw[] (0,0) node[below left] {\tiny  $x$};
+		\draw[] (2,0) node[below right] {\tiny  $x+\hat\mu$};
+		\draw[] (0,2) node[above left] {\tiny  $x+\hat\nu$};
+		\draw[] (2,2) node[above right] {\tiny  $x+\hat\mu+\hat\nu$};
+		
+		\draw[] (8,2) node[] {plaquette:};
+		
+		\draw[] (8,1) node[] {\small  $U_{x,\mu\nu} = U^{\dagger}_{x,\nu} U^{\dagger}_{x+\hat\nu,\mu}U_{x+\hat\mu,\nu}U_{x,\mu}$};
+		
+		\draw[blue] (1,0) node[below] {\small $U_{x,\mu}$};
+		\draw[blue] (2,1) node[right] {\small  $U_{x+\hat\mu,\nu}$};	
+		\draw[blue] (1,2) node[above] {\small  $U^{\dagger}_{x+\hat\nu,\mu}$};
+		\draw[blue] (0,1) node[left] {\small  $U^{\dagger}_{x,\nu}$};
+	\end{tikzpicture}
+     
+    Wilson's standard action
+$$ S[U] = \frac{\beta}{N}\sum_{x}\sum_{\mu < \nu} \text{Tr Re} \left[\mathds{1} - U_{x,\mu\nu} \right], $$
+where $\beta = 2N/g^2$, with $g$ the gauge coupling. 
+\end{frame}
+
+\begin{frame}{Fermions on the lattice}
+    Fermi stastistics implemented by \textit{anticommuting} Grassman variables
+    $$ \psi_i \psi_j = - \psi_j\psi_i.$$
+    
+    Free fermion functional integral (fermion determinant)
+    $$Z_F = \int D\bar{\Psi} D\Psi\, \exp(-\bar\Psi D_{\text{Dirac}}\Psi) = \det D_{\text{Dirac}},$$
+    where $D_{\text{Dirac}}$ is the Dirac operator.
+
+\end{frame}
+
+\subsection{2d Schwinger model}
+\begin{frame}{Example: Schwinger model}
+Lagrangian of the Schwinger model 
+$$\mathcal{L} = \frac{1}{4}F_{\mu\nu}F_{\mu\nu} + \bar\psi(i\gamma_{\mu}D_{\mu}-m_0)\psi,$$
+where $F_{\mu\nu} = \partial_{\mu} A_{\nu} - \partial_{\nu} A_{\mu}$ and $D_{\mu} = \partial + igA$.
+\end{frame}
+
+\begin{frame}{Plaquette value}
+\begin{center}
+\includegraphics[scale=0.7]{plaquette.pdf}
+\end{center}
+\end{frame}
+
+\begin{frame}{Pion correlation function}
+\begin{center}
+\includegraphics[scale=0.7]{correlation_pion.pdf}
+\end{center}
+\end{frame}
+
+
+\begin{frame}{Effective mass}
+\begin{center}
+\includegraphics[scale=0.7]{meff_plot.pdf}
+\end{center}
+\end{frame}
+
+\section{Summary}
+\begin{frame}{Summary}
+
+Functional integral formalism alternative to canonical quantization. \\~
+
+Wick's rotation: QFT $\to$ Statatistical physics.  \\~
+
+Lattice regularization non-perturbative and gauge invariant approach.\\~
+
+Compact formulation does NOT require gauge fixing. \\~
+
+Lattice formulation very robust.\\~
+    
+\end{frame}
+
+\begin{frame}{Referencias}
+
+¡Siganme en mi GitHub \faGithub !
+\url{https://github.com/JoseAntonioLattice}
+\includegraphics[scale=0.15]{figures/github.png}
+\end{frame}
+
+
+\end{document}
