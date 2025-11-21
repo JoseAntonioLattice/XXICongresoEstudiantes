@@ -173,8 +173,8 @@
 \end{frame}
 
 \begin{frame}{Lattice gauge field theory}
-Compact formulation: $$A_{\mu}(x) \in \mathfrak{su}(N) \to U_{\mu}(x) \in \text{SU}(N).$$
-$$\text{Link variable: }U_{\mu}(x) = e^{iA_{\mu}(x)}.$$ 
+Compact formulation: $$A_{x,\mu} \in \mathfrak{su}(N) \to U_{x,\mu} \in \text{SU}(N).$$
+$$\text{Link variable: }U_{x,\mu} = e^{iA_{x,\mu}}.$$ 
 
 	\begin{tikzpicture}[scale = 0.7]
 		%\tikzset{middlearrow/.style={decoration={markings,mark= at position 0.6 with {\arrow{#1}} ,},postaction={decorate}}};
@@ -217,11 +217,58 @@ where $\beta = 2N/g^2$, with $g$ the gauge coupling.
 
 \end{frame}
 
+\begin{frame}
+Computation of fermion determinant very inefficient. \\~
+
+Better to invert the Dirac matrix.\\~
+
+Instead of working with fermions one works with \textit{pseudo-fermions}. \\~
+
+Pseudo-fermions are bosonic variables with the same partition function.
+ 
+
+ 
+
+
+\end{frame}
+
 \subsection{2d Schwinger model}
 \begin{frame}{Example: Schwinger model}
 Lagrangian of the Schwinger model 
-$$\mathcal{L} = \frac{1}{4}F_{\mu\nu}F_{\mu\nu} + \bar\psi(i\gamma_{\mu}D_{\mu}-m_0)\psi,$$
+$$\mathcal{L} = \frac{1}{4}F_{\mu\nu}F_{\mu\nu} + \sum_f\bar\psi^f(i\gamma_{\mu}D_{\mu}-m_0^f)\psi^f,$$
 where $F_{\mu\nu} = \partial_{\mu} A_{\nu} - \partial_{\nu} A_{\mu}$ and $D_{\mu} = \partial + igA$.
+
+Action on the lattice
+\begin{eqnarray*}
+    S[\psi,\bar\psi,U]& = & \beta\sum_{x}\text{Re}(1-U_{x,12}) + \\
+    & &\sum_{x,f}\bar{\psi}^f_x\sum_{\mu=1}^2\gamma_{\mu}\frac{U_{x,\mu}\psi^{f}_{x+\hat{\mu}}-U_{x,-\mu}\psi^{f}_{x-\hat{\mu}}}{2} + \\
+    & &\sum_{x,f,\mu}m_0^f\bar\psi^f_x\psi^f_x + \text{other terms}.
+\end{eqnarray*}
+\end{frame}
+
+
+\begin{frame}
+Fermion fields $\psi$ satisfy anti-periodic boundary conditions in the Euclidean time direction and periodic elsewhere.
+
+In 1+1 dimensions
+
+$$\gamma_0 = \begin{pmatrix}
+0 & 1\\
+1 & 0
+\end{pmatrix}, \ \ \ \gamma_1 = \begin{pmatrix}
+0 & -i\\
+i & 0
+\end{pmatrix}.
+$$
+and $\gamma_5 = \begin{pmatrix}
+-1 & 0\\
+0 & 1
+\end{pmatrix}$.
+\end{frame}
+
+\begin{frame}{Plaquette value}
+
+$$\text{plaquette value} = \left\langle\frac{1}{V}\sum_{x}\text{Re }U_{x,12}\right\rangle$$
 \end{frame}
 
 \begin{frame}{Plaquette value}
@@ -229,6 +276,13 @@ where $F_{\mu\nu} = \partial_{\mu} A_{\nu} - \partial_{\nu} A_{\mu}$ and $D_{\mu
 \includegraphics[scale=0.7]{plaquette.pdf}
 \end{center}
 \end{frame}
+
+
+\begin{frame}{Pion correlation function}
+   Iso-triplet pion propagator $\left\langle O_n\bar O_m\right\rangle = C_{\text{pion}}(|n-m|)$, where $O_n = \bar d_n \gamma_5 u_n$. 
+   $$C_{\text{pion}}(|n-m|) = \left\langle-\frac{1}{\sqrt{V_{\text{spatial}}}}\sum_{x,\alpha,\beta}\left | D^{-1}_{\text{Dirac}}(n|m)_{\alpha\beta}\right|^2\right\rangle.$$  
+\end{frame}
+
 
 \begin{frame}{Pion correlation function}
 \begin{center}
@@ -238,10 +292,24 @@ where $F_{\mu\nu} = \partial_{\mu} A_{\nu} - \partial_{\nu} A_{\mu}$ and $D_{\mu
 
 
 \begin{frame}{Effective mass}
+    $$\frac{C(t)}{C(t+1)} = \frac{\cosh(m_{\text{eff}}(t-N_T/2))}{\cosh(m_{\text{eff}}(t+1-N_T/2))}$$
+\end{frame}
+
+
+\begin{frame}{Effective mass}
 \begin{center}
 \includegraphics[scale=0.7]{meff_plot.pdf}
 \end{center}
 \end{frame}
+
+\begin{frame}{Topological charge with slab method}
+    
+    The slab method...
+
+\end{frame}
+
+
+
 
 \section{Summary}
 \begin{frame}{Summary}
@@ -258,11 +326,11 @@ Lattice formulation very robust.\\~
     
 \end{frame}
 
-\begin{frame}{Referencias}
+\begin{frame}{References}
 
-¡Siganme en mi GitHub \faGithub !
+¡Follow me on my \faGithub !
 \url{https://github.com/JoseAntonioLattice}
-\includegraphics[scale=0.15]{figures/github.png}
+%\includegraphics[scale=0.15]{figures/github.png}
 \end{frame}
 
 
