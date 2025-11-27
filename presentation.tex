@@ -11,9 +11,9 @@
 \usepackage{movie15}
 \usepackage{dsfont}
 \usepackage{tikz}
-\def\insertauthorindicator{Ponente}
-\def\insertinstituteindicator{Instituto}
-\def\insertdateindicator{Fecha}
+\def\insertauthorindicator{MSc}
+\def\insertinstituteindicator{Institute}
+\def\insertdateindicator{Date}
 \usetikzlibrary{decorations.markings}
 
 \tikzset{
@@ -36,7 +36,9 @@
 
 \begin{frame}
 \titlepage
-\includegraphics[width=3cm]{icn.png}
+
+\centering
+\includegraphics[width=5cm]{icn.png}
 \end{frame}
 
 %\begin{frame}
@@ -48,26 +50,11 @@
 \begin{frame}{Functional integral formalism}
 
     Sum over ALL field configurations $[\phi(x)]$
-    $$Z = \int \mathcal{D}\phi \, e^{iS[\phi]},$$
-    where $S[\phi]$ is the action% de la configuración
-    $$ S[\phi] = \int d^4 x \, \left( \frac{1}{2}\partial_{\mu}\phi \partial^{\mu}\phi - V(\phi)\right).$$
+    $$Z = \int \mathcal{D}\phi \, e^{-S[\phi]},$$
+    where $S[\phi]$ is the Euclidean action% de la configuración
+    $$ S[\phi] = \int d^4 x \, \left( \frac{1}{2}\partial_{\mu}\phi \partial_{\mu}\phi + V(\phi)\right).$$
     $n$-point function
-    $$ \langle O[\phi(x_1)] \cdots \rangle =  \frac{1}{Z}\int \mathcal{D}\phi \, O[\phi(x_1)]\cdots e^{iS[\phi]}.$$
-\end{frame}
-
-\begin{frame}{Euclidean space}
-    Wick's rotation \\~
-    $$ t \to \tau = i t.$$
-    %Espaciotiempo de Minkowski $\to$ Espaciotiempo euclidiano \\~
-    $$ \eta_{\mu\nu} \to \delta_{\mu\nu}$$
-        
-    Weight factor 
-        $$ \int \mathcal{D}\phi \, e^{iS[\phi]} \to  \int \mathcal{D}\phi \, e^{-S_{\text{E}}[\phi]},$$
-        where
-        $$ S_{\text{E}}[\phi] = \int d^4 x \, \left( \frac{1}{2}\partial_{\mu}\phi \partial_{\mu}\phi + V(\phi)\right).$$
-        Partition function $ Z = \int \mathcal{D}\phi\, e^{-\beta H[\phi]}$.
-        
-        Field theory $\to$ statistical physics. 
+    $$ \langle O[\phi(x_1)] \cdots \rangle =  \frac{1}{Z}\int \mathcal{D}\phi \, O[\phi(x_1)]\cdots e^{-S[\phi]}.$$
 \end{frame}
 
 \subsection{Lattice regularization}
@@ -81,19 +68,18 @@
     	\draw (-0.5,-0.5) grid (2.5,2.5);
     	\fill[red] (1,1) circle(0.15);
     	\draw[red] (1.5,1.5) node[]{$\phi_x$};
-    	\draw[blue] (2,0) node[above right]{ $a$};
+    	\draw[blue] (2,0) node[above right]{ $a = 1$};
     	\draw[-latex, thick] (4,1) --(4,2) node[left]{\small $\hat{2}$};
 	\draw[-latex, thick] (4,1) --(5,1) node[right]{\small $\hat{1}$};
     \end{tikzpicture}
     \end{center}
     \begin{itemize}
     		\item $\phi(x) \to \phi_x$
-         \item $\displaystyle\partial_\mu\phi(x) \to \frac{\phi_{x + a\hat{\mu}} - \phi_x}{a}$
-         \item $\displaystyle\int d^4x \to a^4\sum_{x}$
+         \item $\displaystyle\partial_\mu\phi(x) \to \phi_{x + a\hat{\mu}} - \phi_x$
+         \item $\displaystyle\int d^4x \to \sum_{x}$
     \end{itemize}
     
-    Lattice units $a = 1$. \\~
-    
+   
     NON-PERTURBATIVE formalism.
 \end{frame}
 
@@ -106,7 +92,7 @@
     $$ [\phi_1] \to [\phi_2] \to \cdots$$
 
     $$\langle O \rangle = \frac{1}{N}\sum_{i=1}^N O[\phi_i]$$
-    where $[\phi_i]$ is generated with probability $\frac{1}{Z}e^{-S_{\text{E}}[\phi_i]}$.
+    where $[\phi_i]$ is generated with probability $\frac{1}{Z}e^{-S[\phi_i]}$.
 \end{frame}
 
 \begin{frame}{Importance sampling}
@@ -155,7 +141,7 @@
     \begin{itemize}
         \item Wolff
         \item Swendsen-Wang
-        \item Molecular dynamics \\
+        \item Hybrid Monte Carlo (HMC)
     \end{itemize}
 \end{frame}
 
@@ -164,8 +150,8 @@
     \begin{itemize}
     		\item Initial configuration \emph{\textcolor{red}{hot}} or \emph{\textcolor{blue}{cold}} \emph{start}.
         \item Generation of configurations.
-        \item Equilibrium.
-        \item Taking measurements.
+        \item Thermalization: attain equilibrium.
+        \item Taking of measurements.
         \item Computation of averages and errors (\emph{jackknife} commonly used).
         \item Interpretation of results.
     \end{itemize}
@@ -173,16 +159,18 @@
 \end{frame}
 
 \begin{frame}{Lattice gauge field theory}
-Compact formulation: $$A_{x,\mu} \in \mathfrak{su}(N) \to U_{x,\mu} \in \text{SU}(N).$$
+Compact formulation (NO gauge fixing): $$A_{x,\mu} \in \mathfrak{su}(N) \to U_{x,\mu} \in \text{SU}(N).$$
 $$\text{Link variable: }U_{x,\mu} = e^{iA_{x,\mu}}.$$ 
 
-	\begin{tikzpicture}[scale = 0.7]
-		%\tikzset{middlearrow/.style={decoration={markings,mark= at position 0.6 with {\arrow{#1}} ,},postaction={decorate}}};
+	\begin{tikzpicture}[scale = 0.7,decoration={markings, mark= at position 0.6 with {\arrow{latex}}}]
+	
 		\draw[step=2cm,color=gray] (-1,-1) grid (3,3);
-		\draw[very thick,red] (0,0) --(2,0);
-		\draw[very thick,red] (2,0)--(2,2);
-		\draw[very thick,red] (2,2)--(0,2);
-		\draw[very thick,red] (0,2)--(0,0);
+		
+		\draw[postaction={decorate},very thick,red] (0,0) --(2,0);
+		\draw[postaction={decorate},very thick,red] (2,0)--(2,2);
+		\draw[postaction={decorate},very thick,red] (2,2)--(0,2);
+		\draw[postaction={decorate},very thick,red] (0,2)--(0,0);
+		
 		\filldraw[black] (0,0) circle(0.1);
 		\filldraw[black] (2,0) circle(0.1);
 		\filldraw[black] (2,2) circle(0.1);
@@ -209,7 +197,7 @@ where $\beta = 2N/g^2$, with $g$ the gauge coupling.
 
 \begin{frame}{Fermions on the lattice}
     Fermi stastistics implemented by \textit{anticommuting} Grassman variables
-    $$ \psi_i \psi_j = - \psi_j\psi_i.$$
+    $$ \psi_i \psi_j = - \psi_j\psi_i, \ \ \ i,j\in\{1,\dots,N\}.$$
     
     Free fermion functional integral (fermion determinant)
     $$Z_F = \int D\bar{\Psi} D\Psi\, \exp(-\bar\Psi D_{\text{Dirac}}\Psi) = \det D_{\text{Dirac}},$$
@@ -218,37 +206,49 @@ where $\beta = 2N/g^2$, with $g$ the gauge coupling.
 \end{frame}
 
 \begin{frame}
+
+Fermion fields $\psi$ satisfy anti-periodic boundary conditions in the Euclidean time direction and periodic elsewhere. \\~
+
 Computation of fermion determinant very inefficient. \\~
 
 Better to invert the Dirac matrix.\\~
 
-Instead of working with fermions one works with \textit{pseudo-fermions}. \\~
+On the lattice, instead of working with fermions one works with \textit{pseudo-fermions}. \\~
 
-Pseudo-fermions are bosonic variables with a similar partition function to fermion determinant for two degenerate fermion masses.
- 
+Pseudo-fermions are bosonic variables with a similar partition function to the  fermion determinant for two degenerate mass flavors.
 
- 
+\end{frame}
 
+\begin{frame}{Lattice QCD}
+
+    In four spacetime dimensions and two fermion flavors the Dirac Matrix of QCD has     
+    $$ (12L_t L_xL_yL_z)^2$$
+    entries.  \\~
+    
+For a square matrix with $L_t= L_x = L_y = L_z = 32$ the matrix has $(1.3\times 10^7)^2$ elements. \\~
+    
+    We have to do several matrix operations for each HMC update.\\~
+    
+    Very difficult to simulate.
 
 \end{frame}
 
 \subsection{2d Schwinger model}
 \begin{frame}{Example: Schwinger model}
 Lagrangian of the Schwinger model 
-$$\mathcal{L} = \frac{1}{4}F_{\mu\nu}F_{\mu\nu} + \sum_f\bar\psi^f(i\gamma_{\mu}D_{\mu}-m_0)\psi^f,$$
-where $F_{\mu\nu} = \partial_{\mu} A_{\nu} - \partial_{\nu} A_{\mu}$ and $D_{\mu} = \partial + igA$.
+$$\mathcal{L} = \frac{1}{4}F_{\mu\nu}F_{\mu\nu} + \sum_f\bar\psi^f(\gamma_{\mu}D_{\mu}+m_0)\psi^f,$$
+where $F_{\mu\nu} = \partial_{\mu} A_{\nu} - \partial_{\nu} A_{\mu}$ and $D_{\mu} = \partial_{\mu} + ieA_{\mu}$.
 
 Action on the lattice
 \begin{eqnarray*}
     S[\psi,\bar\psi,U]& = & \beta\sum_{x}\text{Re}(1-U_{x,12}) + \\
     & &\sum_{x,f}\bar{\psi}^f_x\sum_{\mu=1}^2\gamma_{\mu}\frac{U_{x,\mu}\psi^{f}_{x+\hat{\mu}}-U_{x,-\mu}\psi^{f}_{x-\hat{\mu}}}{2} + \\
-    & &\sum_{x,f,\mu}m_0\bar\psi^f_x\psi^f_x + \text{other terms}.
+    & &\sum_{x,f,\mu}m_0\bar\psi^f_x\psi^f_x + \text{other terms},
 \end{eqnarray*}
+where $\beta = 1/e^2$.
 \end{frame}
 
-
 \begin{frame}
-Fermion fields $\psi$ satisfy anti-periodic boundary conditions in the Euclidean time direction and periodic elsewhere.
 
 In 1+1 dimensions
 
@@ -279,30 +279,23 @@ $$\text{plaquette value} = \left\langle\frac{1}{V}\sum_{x}\text{Re }U_{x,12}\rig
 
 
 \begin{frame}{Pion correlation function}
-   Iso-triplet pion propagator $\left\langle O_n\bar O_m\right\rangle = C_{\text{pion}}(|n-m|)$, where $O_n = \bar d_n \gamma_5 u_n$. 
-   $$C_{\text{pion}}(|n-m|) = \left\langle-\frac{1}{\sqrt{V_{\text{spatial}}}}\sum_{x,\alpha,\beta}\left | D^{-1}_{\text{Dirac}}(n|m)_{\alpha\beta}\right|^2\right\rangle.$$  
+   Pion propagator $C_{\pi}(t)=\left\langle O_n\bar O_m\right\rangle $, where $O_n = \bar d_n \gamma_5 u_n$ and $t = |n-m|$.
+   $$C_{\pi}(t) = \left\langle\sum_{\alpha,\beta}\left | D^{-1}_{\text{Dirac}}(n|m)_{\alpha\beta}\right|^2\right\rangle.$$  
+   
+   Decays exponentially in Euclidean time
+   $$ C_{\pi}(t)\propto \exp(-m_{\pi}t).$$
+   
+   To take into account periodicity we use
+    $$C_{\pi}(t)\propto \cosh(m_{\pi}(t-L_t/2)).$$
 \end{frame}
 
 
 \begin{frame}{Pion correlation function}
 \centering
 \includegraphics[scale=0.9]{correlation_pion.pdf}
-
+%\include{correlation_pion.tex}
 \end{frame}
 
-
-\begin{frame}{Effective mass}
-To take into account periodicity we use
-    $$\frac{C(t)}{C(t+1)} = \frac{\cosh(m_{\text{eff}}(t-N_T/2))}{\cosh(m_{\text{eff}}(t+1-N_T/2))},$$
-    and solve for $m_{\text{eff}}$ at each $t$.
-\end{frame}
-
-
-\begin{frame}{Effective mass}
-\centering
-\includegraphics[scale=0.9]{meff_plot.pdf}
-
-\end{frame}
 
 \begin{frame}{Topological susceptibility with slab method}
     
@@ -314,36 +307,49 @@ To take into account periodicity we use
     
     $$p(q)p(Q-q) \propto \exp\left(-\frac{1}{2\chi_tV}\frac{(q-xQ)^2}{x(1-x)} \right),$$
     from which we infer
-    $$\langle q^2\rangle = \chi_tVx(1-x) + x^2Q^2. $$
+    $$\langle q^2\rangle = \chi_tVx(1-x) + Q^2x^2. $$
 \end{frame}
 
 \begin{frame}{Topological susceptibility with slab method}
     \centering
-    \includegraphics[scale=0.7]{top_char_slab_3.pdf}
-
+    \includegraphics[scale=0.7]{slab.pdf}
+   
 \end{frame}
 
 
 \section{Summary}
 \begin{frame}{Summary}
 
-Functional integral formalism alternative to canonical quantization. \\~
-
-Wick's rotation: QFT $\to$ Statatistical physics.  \\~
-
-Lattice regularization non-perturbative and gauge invariant approach.\\~
+Lattice regularization is a non-perturbative and gauge invariant approach.\\~
 
 Compact formulation does NOT require gauge fixing. \\~
 
 Lattice formulation very robust.\\~
+
+QCD very difficult on the lattice. \\~
+
+Schwinger model: toy model for QCD. \\~
+
+The slab method efficient when topological freezing occurs.
     
 \end{frame}
 
 \begin{frame}{References}
 
-¡Follow me on my \faGithub !
-\url{https://github.com/JoseAntonioLattice}
-%\includegraphics[scale=0.15]{figures/github.png}
+\textbf{¡Follow me on \faGithub !}
+\url{https://github.com/JoseAntonioLattice}\\~
+
+\textbf{Lattice QCD books}
+
+Gattringer C., Lang C.B., Quantum Chromodynamics on the Lattice: An Introductory
+Presentation. \\~
+
+Knechtli F., Günther M., Peardon M., Lattice Quantum Chromodynamics Practical Essentials. \\~
+
+\textbf{The slab method}
+
+Bietenholz W., de Forcrand P., Gerber U., Topological Susceptibility from Slabs. JHEP 12 (2015).
+ 
 \end{frame}
 
 
